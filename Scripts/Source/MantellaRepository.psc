@@ -6,6 +6,7 @@ SPELL Property MantellaEndSpell auto
 ;Faction Property giafac_talktome  Auto ;gia
 Faction Property giafac_AllowFollower  Auto ;gia
 Faction Property giafac_AllowAnger  Auto ;gia
+Faction Property giafac_AllowFactionChange  Auto
 ;Faction Property giafac_AllowForgive  Auto ;gia
 Faction Property giafac_AllowDialogue  Auto ;gia
 Faction Property giafac_Following  Auto ;gia
@@ -56,6 +57,7 @@ bool property AllowForNPCtoFollow auto ;gia
 bool property NPCAnger auto ;gia
 ;bool property NPCForgive auto ;gia
 bool property NPCDialogue auto ;gia
+bool property NPCFactionChange auto
 
 bool property NPCdebugSelectModeEnabled auto
 
@@ -104,6 +106,7 @@ event OnInit()
 	NPCAnger = false ;gia
 	;NPCForgive = false ;gia
 	NPCDialogue = True ;gia
+	NPCFactionChange = false
     
     NPCdebugSelectModeEnabled = false
 endEvent

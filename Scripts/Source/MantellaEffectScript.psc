@@ -182,6 +182,10 @@ event OnEffectStart(Actor target, Actor caster)
     endIf
 endEvent
 
+Form function FormFromString(String formString)
+    String[] stringParts = StringUtil.Split(formString, ":")
+    return Game.GetFormFromFile(stringParts[0] as int, stringParts[1]) 
+endFunction
 
 function MainConversationLoop(Actor target, Actor caster, String actorName, String actorRelationship, Int loopCount)
     String sayLine = MiscUtil.ReadFromFile("_mantella_say_line.txt") as String
@@ -234,6 +238,62 @@ function MainConversationLoop(Actor target, Actor caster, String actorName, Stri
                 MiscUtil.WriteToFile("_mantella_aggro.txt", "",  append=false)
             endIf
         endIf
+
+        ; Check faction status changes after every line spoken
+        bool allowFactionChange = game.getplayer().isinfaction(Repository.giafac_AllowFactionChange)
+        String factionId
+        String factionFile
+        Form factionForm
+        factionId = MiscUtil.ReadFromFile("_mantella_join_faction.txt") as String
+        if (factionId != "False")
+            if allowFactionChange
+                Debug.Notification(actorName + " is now a member of the " + factionId + ".")
+                MiscUtil.WriteToFile("_mantella_join_faction.txt", "False",  append=false)
+            else
+                Debug.Notification("Faction change action not enabled in the Mantella MCM.")
+            endif
+        endif
+        int i = 1
+        while (i <= 10)
+            factionId = MiscUtil.ReadFromFile("_mantella_join_faction_"+i+".txt") as String
+            if (factionId == "False")
+                i = 100
+            else
+                if (allowFactionChange)
+                    factionForm = FormFromString(factionId)
+                    if (factionForm != None && !target.IsInFaction(factionForm as Faction))
+                        target.SetFactionRank(factionForm as Faction, 0)
+                    endif
+                endif
+                MiscUtil.WriteToFile("_mantella_join_faction_"+i+".txt", "False",  append=false)
+                i += 1
+            endif
+        endwhile
+        factionId = MiscUtil.ReadFromFile("_mantella_leave_faction.txt") as String
+        if (factionId != "False")
+            if allowFactionChange
+                Debug.Notification(actorName + " is no longer a member of the " + factionId + ".")
+                MiscUtil.WriteToFile("_mantella_leave_faction.txt", "False",  append=false)
+            else
+                Debug.Notification("Faction change action not enabled in the Mantella MCM.")
+            endif
+        endif
+        i = 1
+        while (i <= 30)
+            factionId = MiscUtil.ReadFromFile("_mantella_leave_faction_"+i+".txt") as String
+            if (factionId == "False")
+                i = 100
+            else
+                if (allowFactionChange)
+                    factionForm = FormFromString(factionId)
+                    if (factionForm != None && target.IsInFaction(factionForm as Faction))
+                        target.RemoveFromFaction(factionForm as Faction)
+                    endif
+                endif
+                MiscUtil.WriteToFile("_mantella_leave_faction_"+i+".txt", "False",  append=false)
+                i += 1
+            endif
+        endwhile
 
         ; Update time (this may be too frequent)
         int Time = GetCurrentHourOfDay()

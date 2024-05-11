@@ -8,6 +8,9 @@ VirtualMachineAdapter:
       Name: giafac_AllowAnger
       Object: 042517:Mantella.esp
     - MutagenObjectType: ScriptObjectProperty
+      Name: giafac_AllowFactionChange
+      Object: 038318:Mantella.esp
+    - MutagenObjectType: ScriptObjectProperty
       Name: giafac_AllowDialogue
       Object: 042519:Mantella.esp
     - MutagenObjectType: ScriptObjectProperty

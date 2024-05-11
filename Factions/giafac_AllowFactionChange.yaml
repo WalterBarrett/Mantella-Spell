@@ -1,0 +1,9 @@
+FormKey: 038318:Mantella.esp
+EditorID: giafac_AllowFactionChange
+Name:
+  TargetLanguage: English
+  Value: giafac_AllowFactionChange
+CrimeValues:
+  Arrest: True
+  AttackOnSight: True
+VendorValues: {}
